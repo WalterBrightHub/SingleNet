@@ -55,7 +55,7 @@ public class NewAppWidget extends AppWidgetProvider {
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
         if (CLICK_ACTION.equals(intent.getAction())){
-            //Toast.makeText(context, "hello dog!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "hello dog!", Toast.LENGTH_SHORT).show();
             //MainActivity.
 
         }

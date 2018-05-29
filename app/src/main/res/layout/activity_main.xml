@@ -1,12 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/txt_pswd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:letterSpacing="0.3"
+        android:text="\??????"
+        android:textAlignment="center"
+        android:textSize="60sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/txt_vld"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="似乎并没有数据。请点击“发送短信”以获取密码。" />
+
+    <Button
+        android:id="@+id/btn_sendMM"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="发送短信" />
+
+    <Button
+        android:id="@+id/btn_forceSendMM"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="强制发送短信" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="开发者功能" />
+
+    <Button
+        android:id="@+id/btn_clearVld"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="手动过期" />
+
+    <Button
+        android:id="@+id/btn_clearAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="清空存储" />
+
+    <TextView
+        android:id="@+id/txt_simInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="未开发的功能" />
+
     <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <RadioButton
             android:id="@+id/sim1"
@@ -22,11 +78,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="SIM卡2" />
-    </RadioGroup>
 
-    <Button
-        android:id="@+id/btn_sendMM"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="发送短信" />
+    </RadioGroup>
 </LinearLayout>
