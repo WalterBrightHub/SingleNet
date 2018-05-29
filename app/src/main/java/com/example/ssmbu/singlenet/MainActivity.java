@@ -48,6 +48,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        //btn_sendMM.click
     }
 }
