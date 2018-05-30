@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String SINGLENETMSG="mm";
     private String saved_pswd,saved_vld;
     private static final String TAG = "MainActivity";
+    //闪讯短信中的格式
+    private static final SimpleDateFormat ft=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
     @Override
@@ -106,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     Date vld,now;
                     now=new Date();
-                    SimpleDateFormat ft=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
                     try{
                         vld=ft.parse(saved_vld);
                         if(now.before(vld)){
@@ -217,8 +219,8 @@ public class MainActivity extends AppCompatActivity {
     //更新密码和到期时间。在保存信息和活动启动时调用。
     private void update_pswd_vld(){
         txt_pswd.setText(saved_pswd);
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String msg="当前时间："+format.format(new Date())+"\n过期时间："+saved_vld;
+        //SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String msg="当前时间："+ft.format(new Date())+"\n过期时间："+saved_vld;
         txt_vld.setText(msg);
     }
     //从本地读取密码与过期时间

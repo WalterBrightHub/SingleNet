@@ -5,13 +5,27 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+//import android.content.SharedPreferences;
+import android.content.SharedPreferences;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.widget.RemoteViews;
+//import android.content.SharedPreferences;
 import android.widget.Toast;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class NewAppWidget extends AppWidgetProvider {
+    private static final String TAG = "NewAppWidget";
+    private static final String SINGLENETNUMBER="106593005";
+    private static final String SINGLENETMSG="mm";
 
      public static final String CLICK_ACTION="com.example.ssmbu.singlenet.action.CLICK";
 
@@ -26,7 +40,10 @@ public class NewAppWidget extends AppWidgetProvider {
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
-        Intent intent = new Intent(CLICK_ACTION);
+        //Intent intent = new Intent(CLICK_ACTION);
+        //传递参数，否则MainActivity注销后点击小部件无响应。金立机有此问题。
+        Intent intent=new Intent(context,NewAppWidget.class);
+        intent.setAction(CLICK_ACTION);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, R.id.yinxian_imageView, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.yinxian_imageView, pendingIntent);
 
@@ -53,10 +70,35 @@ public class NewAppWidget extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+
         super.onReceive(context, intent);
         if (CLICK_ACTION.equals(intent.getAction())){
-            Toast.makeText(context, "hello dog!", Toast.LENGTH_SHORT).show();
-            //MainActivity.
+
+
+            //Toast.makeText(context,"click widget",Toast.LENGTH_SHORT).show();
+            SharedPreferences preferences=context.getSharedPreferences("data",MODE_PRIVATE);
+            String pswd=preferences.getString("pswd","");
+            String vld=preferences.getString("vld","");
+            if("".equals(pswd)){
+                Toast.makeText(context,"没有数据",Toast.LENGTH_SHORT).show();
+
+            }
+            else {
+                Date now=new Date();
+                SimpleDateFormat ft=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try{
+                    Date vldDate=ft.parse(vld);
+                    if(now.before(vldDate)){
+                        Toast.makeText(context,pswd,Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        Toast.makeText(context,"密码已过期",Toast.LENGTH_SHORT).show();
+                    }
+                }catch (ParseException e){
+                    Log.e(TAG, "onClick: ", e);
+                }
+            }
+
 
         }
     }
