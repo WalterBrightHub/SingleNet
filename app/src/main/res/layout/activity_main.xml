@@ -44,44 +44,21 @@
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="开发者功能" />
+        android:text="开发者功能"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_clearVld"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="手动过期" />
+        android:text="手动过期"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_clearAll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="清空存储" />
+        android:text="清空存储"
+        android:visibility="gone" />
 
-    <TextView
-        android:id="@+id/txt_simInfo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="未开发的功能" />
-
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RadioButton
-            android:id="@+id/sim1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:checked="true"
-            android:text="SIM卡1" />
-
-        <RadioButton
-            android:id="@+id/sim2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="SIM卡2" />
-
-    </RadioGroup>
 </LinearLayout>
