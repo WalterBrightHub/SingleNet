@@ -31,6 +31,8 @@
         android:id="@+id/btn_sendMM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_weight="0"
         android:text="发送短信" />
 
@@ -38,6 +40,8 @@
         android:id="@+id/btn_forceSendMM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="强制发送短信" />
 
     <TextView
