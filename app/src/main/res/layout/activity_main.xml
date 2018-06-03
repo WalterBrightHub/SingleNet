@@ -13,7 +13,6 @@
         android:letterSpacing="0.3"
         android:paddingBottom="40dp"
         android:paddingTop="40dp"
-        android:text="\??????"
         android:textAlignment="center"
         android:textSize="60sp"
         android:textStyle="bold" />
@@ -24,7 +23,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:paddingBottom="30dp"
-        android:text="似乎并没有数据。请点击“发送短信”以获取密码。"
         android:textAlignment="center" />
 
     <Button

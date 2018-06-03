@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
     }
     private void initPermission(){
         //运行时权限，发送短信
@@ -113,7 +115,8 @@ public class MainActivity extends AppCompatActivity {
                         vld=ft.parse(saved_vld);
                         if(now.before(vld)){
                             update_pswd_vld();
-                            hintDialog("密码未过期","您无需更新密码。\n如有必要，请点击强制更新密码。");
+                            Toast.makeText(MainActivity.this,"密码未过期",Toast.LENGTH_SHORT).show();
+                            //hintDialog("密码未过期","您无需更新密码。\n如有必要，请点击强制更新密码。");
                         }
                         else {
                             sendMM(smsManager);
@@ -216,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
         Toast.makeText(MainActivity.this, "短信已保存", Toast.LENGTH_SHORT).show();
     }
-    //更新密码和到期时间。在保存信息和活动启动时调用。
+    //更新密码，当前时间和到期时间。在保存信息和活动启动时调用。
     private void update_pswd_vld(){
         txt_pswd.setText(saved_pswd);
         //SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -225,14 +228,33 @@ public class MainActivity extends AppCompatActivity {
     }
     //从本地读取密码与过期时间
     private void initData(){
+
+        final SmsManager smsManager=SmsManager.getDefault();
         SharedPreferences preferences=getSharedPreferences("data",MODE_PRIVATE);
         saved_pswd=preferences.getString("pswd","??????");
         saved_vld=preferences.getString("vld","");
         if("".equals(saved_pswd)){
-
+            txt_pswd.setText("??????");
+            txt_vld.setText("正在初始化密码……");
+            sendMM(smsManager);
         }
         else{
-            update_pswd_vld();
+            Date vld,now;
+            now=new Date();
+
+            try{
+                vld=ft.parse(saved_vld);
+                if(now.before(vld)){
+                    update_pswd_vld();
+                }
+                else {
+                    txt_pswd.setText("******");
+                    txt_vld.setText("密码已过期，正在更新中……");
+                    sendMM(smsManager);
+                }
+            }catch (ParseException e){
+                Log.e(TAG, "onClick: ", e);
+            }
         }
 
     }
