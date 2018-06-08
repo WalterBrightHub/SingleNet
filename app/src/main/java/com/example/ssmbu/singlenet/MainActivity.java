@@ -23,6 +23,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ssmbu.singlenet.model.SingleNetObject;
+import com.example.ssmbu.singlenet.presenter.SingleNetImplementor;
+import com.example.ssmbu.singlenet.presenter.SingleNetPresenter;
+import com.example.ssmbu.singlenet.view.SingleNetView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -33,12 +38,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
     @BindView(R.id.txt_pswd)
     TextView txtPswd;
     @BindView(R.id.txt_vld)
     TextView txtVld;
-    @BindView(R.id.btn_sendMM)
+    @BindView(R.id.btn_refreshPswd)
     Button btnSendMM;
     @BindView(R.id.btn_forceSendMM)
     Button btnForceSendMM;
@@ -54,14 +59,7 @@ public class MainActivity extends AppCompatActivity {
     RadioButton sim1;
     @BindView(R.id.sim2)
     RadioButton sim2;
-    /*
-    private Button btn_sendMM;
-    private Button btn_forceSendMM;
-    private Button btn_clearVld;
-    private Button btn_clearAll;
-    private RadioButton sim1, sim2;
-    private TextView txt_simInfo, txt_vld, txt_pswd;*/
-    //private IntentFilter intentFilter;
+
     private MessageReceiver messageReceiver;
     private static final String SINGLENETNUMBER = "106593005";
     private static final String SINGLENETMSG = "mm";
@@ -70,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
     //闪讯短信中的格式
     private static final SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    private SingleNetPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +79,35 @@ public class MainActivity extends AppCompatActivity {
 
         initPermission();
         initReceiver();
-        initData();
+        //initData();
+
+        presenter=new SingleNetImplementor(this);
+        presenter.attachView(view);
+
+        presenter.initPswd();
 
 
     }
+    private SingleNetView view=new SingleNetView() {
+        @Override
+        public void waitData() {
+            txtPswd.setText("??????");
+            txtVld.setText("正在初始化密码……");
+        }
+
+        @Override
+        public void waitNewData() {
+            txtPswd.setText("******");
+            txtVld.setText("密码已过期，正在更新中……");
+        }
+
+        @Override
+        public void loadData(SingleNetObject model) {
+            txtPswd.setText(model.getPswd());
+            String msg = "当前时间：" + ft.format(new Date()) + "\n过期时间：" + model.getVld();
+            txtVld.setText(msg);
+        }
+    };
 
     private void initPermission() {
         //运行时权限，发送短信
@@ -119,12 +143,13 @@ public class MainActivity extends AppCompatActivity {
         registerReceiver(messageReceiver, intentFilter);
     }
 
-    @OnClick({R.id.btn_sendMM, R.id.btn_forceSendMM, R.id.btn_clearVld, R.id.btn_clearAll})
+    @OnClick({R.id.btn_refreshPswd, R.id.btn_forceSendMM, R.id.btn_clearVld, R.id.btn_clearAll})
     public void onViewClicked(View view) {
 
         final SmsManager smsManager = SmsManager.getDefault();
         switch (view.getId()) {
-            case R.id.btn_sendMM:
+            case R.id.btn_refreshPswd:
+
                 if ("".equals(saved_vld)) {
                     sendMM(smsManager);
                     delay_btn_sendMM();
