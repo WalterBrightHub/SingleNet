@@ -18,6 +18,13 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/txt_now"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textAlignment="center" />
+
+    <TextView
         android:id="@+id/txt_vld"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,12 +42,12 @@
         android:text="刷新密码" />
 
     <Button
-        android:id="@+id/btn_forceSendMM"
+        android:id="@+id/btn_sendMM"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:text="强制发送短信" />
+        android:text="发送短信" />
 
     <TextView
         android:id="@+id/textView4"
@@ -49,7 +56,7 @@
         android:text="开发者功能" />
 
     <Button
-        android:id="@+id/btn_clearVld"
+        android:id="@+id/btn_expirePswd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="手动过期" />

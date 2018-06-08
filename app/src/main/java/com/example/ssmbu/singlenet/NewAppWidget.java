@@ -5,16 +5,14 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-//import android.content.SharedPreferences;
 import android.content.SharedPreferences;
-import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.RemoteViews;
-//import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import com.example.ssmbu.singlenet.utils.SMSUtils;
+
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -24,8 +22,6 @@ import static android.content.Context.MODE_PRIVATE;
  */
 public class NewAppWidget extends AppWidgetProvider {
     private static final String TAG = "NewAppWidget";
-    private static final String SINGLENETNUMBER="106593005";
-    private static final String SINGLENETMSG="mm";
 
      public static final String CLICK_ACTION="com.example.ssmbu.singlenet.action.CLICK";
 
@@ -85,9 +81,8 @@ public class NewAppWidget extends AppWidgetProvider {
             }
             else {
                 Date now=new Date();
-                SimpleDateFormat ft=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 try{
-                    Date vldDate=ft.parse(vld);
+                    Date vldDate= SMSUtils.ft.parse(vld);
                     if(now.before(vldDate)){
                         Toast.makeText(context,pswd,Toast.LENGTH_SHORT).show();
                     }

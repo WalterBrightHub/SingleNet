@@ -6,4 +6,8 @@ public interface SingleNetView {
     void waitData();
     void waitNewData();
     void loadData(SingleNetObject model);
+    void notOverdue();
+    void sendMM();
+    void expireData();
+    void clearData();
 }
