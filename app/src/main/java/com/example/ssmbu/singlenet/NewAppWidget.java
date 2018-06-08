@@ -69,9 +69,6 @@ public class NewAppWidget extends AppWidgetProvider {
 
         super.onReceive(context, intent);
         if (CLICK_ACTION.equals(intent.getAction())){
-
-
-            //Toast.makeText(context,"click widget",Toast.LENGTH_SHORT).show();
             SharedPreferences preferences=context.getSharedPreferences("data",MODE_PRIVATE);
             String pswd=preferences.getString("pswd","");
             String vld=preferences.getString("vld","");
