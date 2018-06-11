@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="闪讯">
+
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/pref_entrie_sim"
+            android:entryValues="@array/pref_entryValues_sim"
+            android:key="list_preference_1"
+            android:title="选择SIM卡" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="开发者">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="developer_options"
+            android:title="显示开发者选项" />
+    </PreferenceCategory>
+</PreferenceScreen>

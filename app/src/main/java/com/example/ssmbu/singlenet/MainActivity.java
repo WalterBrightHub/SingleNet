@@ -8,23 +8,28 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ssmbu.singlenet.model.SingleNetObject;
 import com.example.ssmbu.singlenet.presenter.SingleNetImplementor;
 import com.example.ssmbu.singlenet.presenter.SingleNetPresenter;
+import com.example.ssmbu.singlenet.settings.SettingsActivity;
+import com.example.ssmbu.singlenet.settings.model.Settings;
 import com.example.ssmbu.singlenet.utils.SMSUtils;
 import com.example.ssmbu.singlenet.view.SingleNetView;
 
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,7 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
     @BindView(R.id.txt_pswd)
     TextView txtPswd;
     @BindView(R.id.txt_now)
@@ -49,18 +54,13 @@ public class MainActivity extends AppCompatActivity  {
     Button btnClearVld;
     @BindView(R.id.btn_clearAll)
     Button btnClearAll;
-    @BindView(R.id.txt_simInfo)
-    TextView txtSimInfo;
-    @BindView(R.id.sim1)
-    RadioButton sim1;
-    @BindView(R.id.sim2)
-    RadioButton sim2;
+    @BindView(R.id.layout_dev)
+    LinearLayout layoutDev;
 
+    //监听短信广播
     private MessageReceiver messageReceiver;
-    //闪讯短信中的格式
-
-
     private SingleNetPresenter presenter;
+    private Settings settings=Settings.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +69,49 @@ public class MainActivity extends AppCompatActivity  {
         ButterKnife.bind(this);
 
 
+        initView();
         initPermission();
         initReceiver();
 
-        presenter=new SingleNetImplementor(this);
+        presenter = new SingleNetImplementor(this);
         presenter.attachView(view);
 
         presenter.initPswd();
+        new TimeThread().start();
 
     }
-    private SingleNetView view=new SingleNetView() {
+
+    class TimeThread extends Thread {
+        @Override
+        public void run() {
+            do {
+                try {
+                    Message msg = new Message();
+                    msg.what = 1;
+                    handler.sendMessage(msg);
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while (true);
+        }
+    }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 1:
+                    long ct = System.currentTimeMillis();
+                    String now = "当前时间：" + SMSUtils.ft.format(ct);
+                    txtNow.setText(now);
+            }
+        }
+    };
+
+
+    private SingleNetView view = new SingleNetView() {
         @Override
         public void waitData() {
             txtPswd.setText("??????");
@@ -95,32 +128,28 @@ public class MainActivity extends AppCompatActivity  {
         @Override
         public void loadData(SingleNetObject model) {
             txtPswd.setText(model.getPswd());
-            String now = "当前时间："+SMSUtils.ft.format(new Date());
-            txtNow.setText(now);
             String vld = "过期时间：" + model.getVld();
             txtVld.setText(vld);
         }
 
         @Override
         public void notOverdue() {
-            String now = "当前时间："+ SMSUtils.ft.format(new Date());
-            txtNow.setText(now);
-            Toast.makeText(MainActivity.this,"密码未过期",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "密码未过期", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void sendMM() {
-            Toast.makeText(MainActivity.this,"短信已发送",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "短信已发送", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void expireData() {
-            Toast.makeText(MainActivity.this,"手动过期",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "手动过期", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void clearData() {
-            Toast.makeText(MainActivity.this,"手动清空",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "手动清空", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -132,6 +161,9 @@ public class MainActivity extends AppCompatActivity  {
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.RECEIVE_SMS}, 1);
         }
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
+        }
     }
 
     @Override
@@ -140,11 +172,51 @@ public class MainActivity extends AppCompatActivity  {
         unregisterReceiver(messageReceiver);
     }
 
+    private void initView(){
+        if(settings.getDevOpen()){
+            layoutDev.setVisibility(View.VISIBLE);
+        }
+        else {
+            layoutDev.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private void initReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED");
         messageReceiver = new MessageReceiver();
         registerReceiver(messageReceiver, intentFilter);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_Settings:
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                //startActivity(intent);
+                startActivityForResult(intent, 1);
+        }
+        return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                //设置页面返回
+                if (Settings.getDevOpen()) {
+                    layoutDev.setVisibility(View.VISIBLE);
+                }
+                else {
+                    layoutDev.setVisibility(View.INVISIBLE);
+                }
+        }
     }
 
     @OnClick({R.id.btn_refreshPswd, R.id.btn_sendMM, R.id.btn_expirePswd, R.id.btn_clearAll})
