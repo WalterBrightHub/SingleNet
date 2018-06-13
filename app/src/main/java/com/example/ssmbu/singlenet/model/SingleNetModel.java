@@ -12,13 +12,13 @@ import java.util.Date;
 
 import static android.content.ContentValues.TAG;
 
-public class SingleNetObject  {
+public class SingleNetModel {
     private String pswd="";
     private String vld="";
     private String smsBody="";
-    public SingleNetObject(){
+    public SingleNetModel(){
     }
-    public SingleNetObject(String fullMessage){
+    public SingleNetModel(String fullMessage){
         smsBody=fullMessage;
         //"尊敬的闪讯用户，您的宽带上网密码是：164126,密码在2018-05-31 05:29:59以前有效";
         pswd = fullMessage.substring(18, 24);

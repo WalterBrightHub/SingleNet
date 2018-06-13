@@ -1,11 +1,9 @@
 package com.example.ssmbu.singlenet.view;
 
-import com.example.ssmbu.singlenet.model.SingleNetObject;
-
 public interface SingleNetView {
     void waitData();
     void waitNewData();
-    void loadData(SingleNetObject model);
+    void loadData(String pswd,String vld);
     void notOverdue();
     void sendMM();
     void expireData();

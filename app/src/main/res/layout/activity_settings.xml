@@ -16,6 +16,7 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="闪讯"
             android:textColor="@color/colorAccent" />
 
@@ -36,6 +37,7 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:text="开发者选项"
             android:textColor="@color/colorAccent" />
 
@@ -44,5 +46,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="启用开发者选项" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="斐讯K2路由器"
+            android:textColor="@color/colorAccent" />
+
+        <Button
+            android:id="@+id/btn_editK2Pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="配置路由器密码" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

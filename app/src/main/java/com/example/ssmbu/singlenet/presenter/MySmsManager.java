@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.ssmbu.singlenet.MainActivity;
 import com.example.ssmbu.singlenet.MyApplication;
 import com.example.ssmbu.singlenet.utils.SIMUtils;
+import com.example.ssmbu.singlenet.utils.SharedPreferencesUtils;
 
 public class MySmsManager {
     private Context context;
@@ -22,8 +23,9 @@ public class MySmsManager {
 
     public void sendMM(){
         if(SIMUtils.isTwoSim()){
-            SharedPreferences sp= MyApplication.getContext().getSharedPreferences("settings",Context.MODE_PRIVATE);
-            int sim=sp.getInt("sim",0);
+            int sim= (int)SharedPreferencesUtils.getFromSpfs(MyApplication.getContext(),"sim",0);
+            //SharedPreferences sp= MyApplication.getContext().getSharedPreferences("settings",Context.MODE_PRIVATE);
+            //int sim=sp.getInt("sim",0);
             int subId= SIMUtils.subIdFromSIM(sim);
             SmsManager smsManager=SmsManager.getSmsManagerForSubscriptionId(subId);
             PendingIntent pi = PendingIntent.getActivity(context, 0, new Intent(), 0);

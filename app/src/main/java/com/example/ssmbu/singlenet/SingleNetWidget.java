@@ -5,23 +5,23 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.example.ssmbu.singlenet.utils.SMSUtils;
+import com.example.ssmbu.singlenet.utils.SharedPreferencesUtils;
 
 import java.text.ParseException;
 import java.util.Date;
 
-import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * Implementation of App Widget functionality.
  */
-public class NewAppWidget extends AppWidgetProvider {
-    private static final String TAG = "NewAppWidget";
+public class SingleNetWidget extends AppWidgetProvider {
+    private static final String TAG = "SingleNetWidget";
 
      public static final String CLICK_ACTION="com.example.ssmbu.singlenet.action.CLICK";
 
@@ -38,7 +38,7 @@ public class NewAppWidget extends AppWidgetProvider {
 
         //Intent intent = new Intent(CLICK_ACTION);
         //传递参数，否则MainActivity注销后点击小部件无响应。金立机有此问题。
-        Intent intent=new Intent(context,NewAppWidget.class);
+        Intent intent=new Intent(context,SingleNetWidget.class);
         intent.setAction(CLICK_ACTION);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, R.id.yinxian_imageView, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.yinxian_imageView, pendingIntent);
@@ -69,9 +69,8 @@ public class NewAppWidget extends AppWidgetProvider {
 
         super.onReceive(context, intent);
         if (CLICK_ACTION.equals(intent.getAction())){
-            SharedPreferences preferences=context.getSharedPreferences("data",MODE_PRIVATE);
-            String pswd=preferences.getString("pswd","");
-            String vld=preferences.getString("vld","");
+            String pswd=(String) SharedPreferencesUtils.getFromSpfs(MyApplication.getContext(),"pswd","");
+            String vld=(String) SharedPreferencesUtils.getFromSpfs(MyApplication.getContext(),"vld","");
             if("".equals(pswd)){
                 Toast.makeText(context,"没有数据",Toast.LENGTH_SHORT).show();
 
