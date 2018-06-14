@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".SingleNetWidget">
+        <receiver android:name=".ui.widget.SingleNetWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.example.ssmbu.singlenet.action.CLICK" />
@@ -38,7 +38,7 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <activity android:name=".settings.SettingsActivity"></activity>
+        <activity android:name=".ui.activity.SettingsActivity"></activity>
     </application>
 
 </manifest>

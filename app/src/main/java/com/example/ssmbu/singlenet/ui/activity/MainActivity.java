@@ -1,4 +1,4 @@
-package com.example.ssmbu.singlenet;
+package com.example.ssmbu.singlenet.ui.activity;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -22,9 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.ssmbu.singlenet.MyApplication;
+import com.example.ssmbu.singlenet.R;
 import com.example.ssmbu.singlenet.presenter.FeixunPresenter;
 import com.example.ssmbu.singlenet.presenter.SingleNetPresenter;
-import com.example.ssmbu.singlenet.settings.SettingsActivity;
 import com.example.ssmbu.singlenet.utils.SMSUtils;
 import com.example.ssmbu.singlenet.utils.SharedPreferencesUtils;
 import com.example.ssmbu.singlenet.view.FeixunView;

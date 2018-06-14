@@ -1,4 +1,4 @@
-package com.example.ssmbu.singlenet.settings;
+package com.example.ssmbu.singlenet.ui.activity;
 
 
 import android.content.DialogInterface;

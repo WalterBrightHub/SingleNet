@@ -3,11 +3,8 @@ package com.example.ssmbu.singlenet.presenter;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.telephony.SmsManager;
-import android.widget.Toast;
 
-import com.example.ssmbu.singlenet.MainActivity;
 import com.example.ssmbu.singlenet.MyApplication;
 import com.example.ssmbu.singlenet.utils.SIMUtils;
 import com.example.ssmbu.singlenet.utils.SharedPreferencesUtils;

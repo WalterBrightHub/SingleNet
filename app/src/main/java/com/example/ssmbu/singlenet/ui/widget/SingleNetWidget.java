@@ -1,4 +1,4 @@
-package com.example.ssmbu.singlenet;
+package com.example.ssmbu.singlenet.ui.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -9,6 +9,8 @@ import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
+import com.example.ssmbu.singlenet.MyApplication;
+import com.example.ssmbu.singlenet.R;
 import com.example.ssmbu.singlenet.utils.SMSUtils;
 import com.example.ssmbu.singlenet.utils.SharedPreferencesUtils;
 
@@ -30,7 +32,7 @@ public class SingleNetWidget extends AppWidgetProvider {
 
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.singlenet_widget);
         //views.setTextViewText(R.id.appwidget_text, widgetText);
 
         // Instruct the widget manager to update the widget
