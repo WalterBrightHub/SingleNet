@@ -4,6 +4,10 @@
     <string name="add_widget">Add widget</string>
     <string name="title_activity_settings">Settings</string>
 
+    <string name="single_net_pswd_refresh">刷新密码</string>
+    <string name="single_net_pswd_sendMM">发送短信</string>
+    <string name="feixun_change_pswd">修改K2密码</string>
+
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->

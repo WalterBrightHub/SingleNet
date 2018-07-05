@@ -8,4 +8,6 @@ public interface SingleNetView {
     void sendMM();
     void expireData();
     void clearData();
+
+    void hideSwipeRefreshLayout();
 }

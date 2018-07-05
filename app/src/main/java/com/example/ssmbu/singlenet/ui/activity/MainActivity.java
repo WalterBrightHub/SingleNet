@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnClearAll;
     @BindView(R.id.layout_dev)
     LinearLayout layoutDev;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     //监听短信广播
     private MessageReceiver messageReceiver;
@@ -75,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         initReceiver();
 
         singleNetPresenter = new SingleNetPresenter(singleNetView);
-        feixunPresenter=new FeixunPresenter(feixunView);
+        feixunPresenter = new FeixunPresenter(feixunView);
 
 
         singleNetPresenter.initPswd();
@@ -112,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private FeixunView feixunView=new FeixunView() {
+    private FeixunView feixunView = new FeixunView() {
         @Override
         public void getSysauthSuccess() {
             feixunPresenter.getPppoeUser();
@@ -120,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void getSysauthFail(String message) {
-            Toast.makeText(MyApplication.getContext(),message,Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.getContext(), message, Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -131,13 +134,13 @@ public class MainActivity extends AppCompatActivity {
                     .setOnCancelListener(new DialogInterface.OnCancelListener() {
                         @Override
                         public void onCancel(DialogInterface dialog) {
-                            Toast.makeText(MyApplication.getContext(),"您取消了修改",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MyApplication.getContext(), "您取消了修改", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setNegativeButton("手滑", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(MyApplication.getContext(),"您取消了修改",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MyApplication.getContext(), "您取消了修改", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -151,23 +154,28 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void getPppoeUserFail() {
 
-            Toast.makeText(MyApplication.getContext(),"请求用户名失败",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.getContext(), "请求用户名失败", Toast.LENGTH_SHORT).show();
 
         }
 
         @Override
         public void postPppoePassSuccess() {
-            Toast.makeText(MyApplication.getContext(),"修改K2闪讯密码成功！请坐和放宽",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.getContext(), "修改K2闪讯密码成功！请坐和放宽", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void postPppoePassFail() {
-            Toast.makeText(MyApplication.getContext(),"修改K2闪讯密码失败！心态崩了",Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.getContext(), "修改K2闪讯密码失败！心态崩了", Toast.LENGTH_SHORT).show();
         }
     };
 
 
     private SingleNetView singleNetView = new SingleNetView() {
+        @Override
+        public void hideSwipeRefreshLayout() {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+
         @Override
         public void waitData() {
             txtPswd.setText("??????");
@@ -182,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void loadData(String pswd,String vld) {
+        public void loadData(String pswd, String vld) {
             txtPswd.setText(pswd);
             txtVld.setText("过期时间：" + vld);
         }
@@ -190,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void notOverdue() {
             Toast.makeText(MainActivity.this, "密码未过期", Toast.LENGTH_SHORT).show();
+            swipeRefreshLayout.setRefreshing(false);
         }
 
         @Override
@@ -227,14 +236,20 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(messageReceiver);
     }
 
-    private void initView(){
-        boolean devOpen=(boolean)SharedPreferencesUtils.getFromSpfs(MyApplication.getContext(),"devOpen",false);
-        if(devOpen){
+    private void initView() {
+        boolean devOpen = (boolean) SharedPreferencesUtils.getFromSpfs(MyApplication.getContext(), "devOpen", false);
+        if (devOpen) {
             layoutDev.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             layoutDev.setVisibility(View.INVISIBLE);
         }
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                singleNetPresenter.refreshPswd();
+            }
+        });
     }
 
     private void initReceiver() {
@@ -266,17 +281,16 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case 1:
                 //设置页面返回
-                boolean devOpen= (boolean)SharedPreferencesUtils.getFromSpfs(MyApplication.getContext(),"devOpen",false);
+                boolean devOpen = (boolean) SharedPreferencesUtils.getFromSpfs(MyApplication.getContext(), "devOpen", false);
                 if (devOpen) {
                     layoutDev.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     layoutDev.setVisibility(View.INVISIBLE);
                 }
         }
     }
 
-    @OnClick({R.id.btn_refreshPswd, R.id.btn_sendMM,R.id.btn_postK2Pass, R.id.btn_expirePswd, R.id.btn_clearAll})
+    @OnClick({R.id.btn_refreshPswd, R.id.btn_sendMM, R.id.btn_postK2Pass, R.id.btn_expirePswd, R.id.btn_clearAll})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_refreshPswd:
@@ -315,6 +329,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     class MessageReceiver extends BroadcastReceiver {
+        /**
+         * 收到短信
+         * @param context
+         * @param intent
+         */
         @Override
         public void onReceive(Context context, Intent intent) {
             singleNetPresenter.saveMessage(intent);

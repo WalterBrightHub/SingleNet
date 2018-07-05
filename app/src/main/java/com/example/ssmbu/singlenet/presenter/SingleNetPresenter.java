@@ -54,6 +54,7 @@ public class SingleNetPresenter {
                 view.notOverdue();
             }
         }
+        view.hideSwipeRefreshLayout();
     }
 
     public void sendMM() {
