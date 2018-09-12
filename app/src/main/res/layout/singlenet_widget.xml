@@ -6,8 +6,15 @@
 
     <ImageView
         android:id="@+id/yinxian_imageView"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/pikachu" />
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/logo_widget" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Widget" />
 
 </LinearLayout>
